@@ -7,8 +7,10 @@ import os
 TOKEN = os.environ.get("TELEGRAM_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
-# BİST hisseleri .IS uzantısı ile yazılmalıdır
-hisseler = ["ASELS.IS", "THYAO.IS", "KCHOL.IS", "GARAN.IS"]
+# Hisse listesi, aynı klasördeki symbols.txt dosyasından okunur.
+# Her satıra bir sembol yazılır; .IS uzantısı zorunludur.
+with open("symbols.txt", "r", encoding="utf-8") as dosya:
+    hisseler = [satir.strip() for satir in dosya if satir.strip()]
 
 def send_telegram(mesaj):
     if not TOKEN or not CHAT_ID:
