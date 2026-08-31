@@ -45,13 +45,13 @@ def check_heikin_ashi(symbol):
     df['HA_Close'] = ha_close
     df['HA_Open'] = ha_open
 
-    # Önceki mum yeşil (Close > Open), son mum kırmızı (Close < Open) ise
-    onceki_yesil = bool(df['HA_Close'].iloc[-2] > df['HA_Open'].iloc[-2])
+    # Hisse, en son kapanışta Heikin Ashi açısından KIRMIZI ise uyarı ver.
+    # Bu yüzden yeşilden kırmızıya dönüş şartı kaldırıldı; her kırmızı kapanış ayrı bildirim üretir.
     son_kirmizi = bool(df['HA_Close'].iloc[-1] < df['HA_Open'].iloc[-1])
 
-    if onceki_yesil and son_kirmizi:
+    if son_kirmizi:
         temiz_isim = symbol.replace('.IS', '')
-        send_telegram(f"🚨 *{temiz_isim}* Heikin Ashi grafiğinde yeşilden **KIRMIZIYA** döndü! (Trend Değişimi)")
+        send_telegram(f"🚨 *{temiz_isim}* Heikin Ashi grafiğinde **KIRMIZI** kapanış gördü! (Gün kapanışı bearish)")
 
 for hisse in hisseler:
     check_heikin_ashi(hisse)
